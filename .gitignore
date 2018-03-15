@@ -1,2 +1,4 @@
 flask_env/
+.idea
+__pycache__
 .idea/
