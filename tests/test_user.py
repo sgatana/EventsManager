@@ -1,22 +1,8 @@
 import json
-import unittest
-from app import create_app, db
+from .base import BaseTest
 
 
-class TestUser(unittest.TestCase):
-    config_name = 'testing'
-    app = create_app(config_name)
-
-    def setUp(self):
-        with self.app.app_context():
-            db.create_all()
-            db.session.commit()
-            self.client = self.app.test_client()
-
-    def tearDown(self):
-        with self.app.app_context():
-            db.drop_all()
-            db.session.remove()
+class TestUser(BaseTest):
 
     def test_user_registration_success(self):
         data = json.dumps({
@@ -56,18 +42,15 @@ class TestUser(unittest.TestCase):
         self.client.post('api/auth/register', data=data, content_type='application/json')
         response = self.client.post('api/auth/login', data=data, content_type='application/json')
         message = json.loads(response.data)
-        print(message)
         self.assertEqual(response.status_code, 200)
         self.assertIn('login successful', message['message'])
 
     def test_unregistered_user_login(self):
         data = json.dumps({
-            "username": 'admin',
             "email": "admin@gmail.com",
             "password": "admin"
         })
         post_data = json.dumps({
-            "username": 'admin1',
             "email": "admin1@gmail.com",
             "password": "admin"
         })

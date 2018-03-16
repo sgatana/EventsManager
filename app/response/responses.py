@@ -1,0 +1,1 @@
+invalid_data = {"error": "Please enter a valid data format"}

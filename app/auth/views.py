@@ -39,7 +39,3 @@ class Login(Resource):
             return {"error": "please enter valid input data"}
 
 
-class Logout(Resource):
-    def post(self):
-        pass
-
