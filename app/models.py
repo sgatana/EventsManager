@@ -25,38 +25,3 @@ class User(db.Model):
     def __repr__(self):
         return 'users: {}'.format(self.username)
 
-    def encode_auth_token(self, user_id):
-        """
-        Generates auth token
-        :param user_id:
-        :return: string
-        """
-        try:
-            payload = {
-                'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1),
-                'iat': datetime.datetime.utcnow(),
-                'sub': user_id
-            }
-            return jwt.encode(payload,
-                              current_app.config.get('SECRET_KEY'),
-                              algorithm='HS256'
-                              )
-
-        except Exception as e:
-            return e
-
-    @staticmethod
-    def decode_auth_token(auth_token):
-        """
-        Decodes the auth token
-        :param: auth_token
-        :return: string/ integer
-        """
-        try:
-            payload = jwt.decode(auth_token, current_app.config.get('SECRET_KEY'))
-            print(current_app)
-            return payload['sub']
-        except jwt.ExpiredSignatureError:
-            return 'Signature expired, please log in'
-        except jwt.InvalidTokenError:
-            return 'Invalid token, please log in agian'
