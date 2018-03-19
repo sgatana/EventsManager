@@ -37,11 +37,15 @@ class Events(db.Model):
     event_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def __init__(self, name, desc, location, event_date):
+    def __init__(self, name, desc, location, event_date, owner):
         self.name = name
         self.description = desc
         self.location = location
         self.event_date = event_date
+        self.user_id = owner
 
     def __repr__(self):
         return 'events available {}'.format(self.name)
+
+    def get_user(self):
+        return User.query.get(self.user_id).username
